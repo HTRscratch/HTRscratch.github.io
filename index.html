@@ -10,7 +10,162 @@
 		<h6> Reading this doesn't seem the best thing to do now. </h6>
 		<canvas id = "screen" width = "1200" height = "600"></canvas>
 		<script>
-			
+			//Program by HTRscratch =D
+
+			var canvas = document.getElementById("canvas");
+			var renderer = canvas.getContext("2d");
+
+			var screenWidth = canvas.width;
+			var screenHeight = canvas.height;
+
+			var drawX, drawY;
+			var CAMERAX = 0;
+			var CAMERAY = 0;
+			var CAMERAZ = 100;
+
+			var luaX;
+			var luaY;
+			var luaSpX;
+			var luaSpY;
+			var luaAcX;
+			var luaAcY;
+
+
+			const planetsize = 60;
+			const luasize = 10;
+
+
+			var vetorbolas = [];
+
+			for ( i = 0; i < 2; i += 0.1)
+			{
+				adicionarbola(0,200,i,0,0,0)
+			}
+			function calculatecircle( vetorbolasID )
+			{
+				luaX = vetorbolas[ vetorbolasID * 6 + 0 ]
+				luaY = vetorbolas[ vetorbolasID * 6 + 1 ]
+				luaSpX = vetorbolas[ vetorbolasID * 6 + 2 ]
+				luaSpY = vetorbolas[ vetorbolasID * 6 + 3 ]
+				luaAcX = vetorbolas[ vetorbolasID * 6 + 4 ]
+				luaAcY = vetorbolas[ vetorbolasID * 6 + 5 ]
+
+
+				var disX = 0 - luaX
+				var disY = 0 - luaY
+
+				var distance = Math.sqrt( disX * disX + disY * disY )
+
+				if ( luasize + planetsize < distance )
+				{
+
+					luaSpX += luaAcX
+					luaSpY += luaAcY
+					luaX += luaSpX
+					luaY += luaSpY
+
+					luaAcX = 0.0000001 * -luaX / distance * distance * distance
+					luaAcY = 0.0000001 * -luaY / distance * distance * distance
+
+					//console.log(distance)
+				}
+
+				CAMERAX += ( luaX - CAMERAX )/ 50
+				CAMERAY += ( luaY - CAMERAY )/ 50
+
+
+				vetorbolas[ vetorbolasID * 6 + 0 ] = luaX
+				vetorbolas[ vetorbolasID * 6 + 1 ] = luaY
+				vetorbolas[ vetorbolasID * 6 + 2 ] = luaSpX
+				vetorbolas[ vetorbolasID * 6 + 3 ] = luaSpY
+				vetorbolas[ vetorbolasID * 6 + 4 ] = luaAcX
+				vetorbolas[ vetorbolasID * 6 + 5 ] = luaAcY
+			}
+
+
+			function adicionarbola( x, y, sx, sy, ax, ay )
+			{
+				vetorbolas.push(x);
+				vetorbolas.push(y);
+				vetorbolas.push(sx);
+				vetorbolas.push(sy);
+				vetorbolas.push(ax);
+				vetorbolas.push(ay);
+			}
+			//console.log( vetorbolas )
+
+			function drawframe()
+			{
+
+				//console.log(screenWidth + " , " + screenHeight);
+
+				renderer.fillStyle = "black";
+				renderer.fillRect(0,0,screenWidth,screenHeight);
+
+				function drawrect( x, y, sx, sy, cor )
+				{
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - sx / 2;
+					drawY = drawY - sy / 2;
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
+
+				renderer.fillStyle = cor;
+					renderer.fillRect(drawX,drawY,sx,sy);
+				}
+
+				function drawcircle( x, y, radius, cor )
+				{
+
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
+
+					renderer.fillStyle = cor;
+					renderer.beginPath();
+					renderer.arc(drawX, drawY, radius, 0, 2 * Math.PI);
+					renderer.fill();
+
+				}
+
+				drawcircle(0,0,planetsize,"Blue");
+				drawcircle(0,0,planetsize/2,"Green");
+
+				for ( i = 0; i < vetorbolas.length; i += 6 )
+				{
+
+					drawcircle(vetorbolas[i],vetorbolas[i + 1],luasize,"LightGray");
+
+				}
+			}
+
+
+			function calculateframe()
+			{
+				//calculate force
+
+				for ( i = 0; i < vetorbolas.length / 6; i += 1 )
+				{
+
+					calculatecircle( i );
+
+				}
+
+			}
+
+			function screenfunc()
+			{
+				calculateframe();
+				drawframe();
+			}
+
+			setInterval(screenfunc,0);
+
 		</script>
 	
 	</body>
