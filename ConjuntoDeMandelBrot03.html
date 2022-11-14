@@ -1,0 +1,163 @@
+<canvas width="1358" height="608"></canvas>
+
+<script>
+
+var tela = document.querySelector('canvas');
+var pincel = tela.getContext('2d');
+var Lt = 600;
+var At = 400;
+var bordapx = 10;
+var CentreX = -0.5;
+var CentreY = 0;
+var RealSize = 3;
+var Size = RealSize/400;
+var MaxInterations = 500;
+var Xpos;
+var Ypos;
+var CX;
+var CY;
+var INTERATION;
+var ZX;
+var ZY;
+var ZXSQ;
+var ZYSQ;
+var Left = 37;
+var Up = 38;
+var Right = 39;
+var Down = 40;
+var mouseX;
+var mouseY;
+var fractal= 2 //Conjunto de Mandelbrot: 2
+
+function desenhaRetanguloRGB( x, y, lar, alt, r, g, b )
+{
+	var cor= "rgb( " + parseInt( r ) + ", " + parseInt( g ) + ", " + parseInt( b ) + " )";
+	
+	//console.log( cor );
+	
+	desenhaRetangulo( x, y, lar, alt, cor );
+}
+
+function desenhaRetangulo( x, y, lar, alt, cor)
+{
+	pincel.fillStyle = cor;
+	pincel.fillRect( Lt / 2 + x - lar / 2, At / 2 + y - alt / 2, lar, alt );
+	
+}
+
+function desenharCenario()
+{
+	pincel.clearRect(0, 0, Lt, At);
+	desenhaRetangulo( 0, 0, 600, 400, "black");
+	desenhaRetangulo( 0, 0, 600 - bordapx /2, 400 - bordapx /2, "white");
+}
+
+
+function CalculatePixel()
+{
+	ZX = CX;
+	ZY = CY;
+	INTERATION = 0;
+	
+	while ( INTERATION != MaxInterations )
+	{
+	 ZXSQ = ZX * ZX;
+	 ZYSQ = ZY * ZY;
+	 if ( ZXSQ * ZYSQ > 2 )
+	 {
+		
+		break;
+		
+	 }
+	 ZY = fractal * ZX * ZY + CY;
+	 ZX = ZXSQ - ZYSQ + CX;
+	 INTERATION++;
+	}
+}
+function DrawRow()
+{
+	Xpos = -Lt / 2 + bordapx / 2;	
+	CX = Xpos * Size + CentreX;
+	var valorR;
+	var valorG;
+	var valorB;
+	
+	while( Xpos != Lt  / 2 - bordapx / 2 )
+	{
+		CalculatePixel();
+			
+		if ( INTERATION == MaxInterations )
+		{
+			desenhaRetangulo( Xpos, Ypos, 2, 2, "black" );
+		}
+		else
+	    {
+				if ( INTERATION < MaxInterations / 10 )
+				{
+					valorR= 255 * Math.sin( INTERATION / 20 );
+					valorG= 255 * Math.sin( INTERATION / 30 );
+					valorB= 255 * Math.sin( INTERATION / 10 );
+					desenhaRetanguloRGB( Xpos, Ypos, 2, 2, valorR, valorG, valorB);
+				}
+			    else
+				{
+					valorR= 255 * Math.sin( INTERATION / 20 );
+					valorG= 255 * Math.sin( INTERATION / 30 );
+					valorB= 255 * Math.sin( INTERATION / 10 );
+					desenhaRetanguloRGB( Xpos, Ypos, 2, 2, valorR, valorG, valorB);
+				}
+			
+	   
+	    }
+		
+		Xpos++;
+		CX = CX + Size;
+	
+	}
+}
+
+function draw()
+{
+	Ypos = -At / 2 + bordapx / 2;
+	CY = Ypos * Size + CentreY;
+	
+	while( Ypos != At  / 2 - bordapx / 2 )
+	{
+		DrawRow();
+		Ypos++; 
+		CY = CY + Size;
+	}
+	
+}
+
+function zoom( evento )
+{
+	mouseX = Lt/2 - evento.pageX - tela.offsetLeft;
+	mouseY = At/2 - evento.pageY - tela.offsetTop;
+	mouseX = -mouseX;
+	mouseY = -mouseY;
+	CentreX = mouseX* Size + CentreX;
+	CentreY = mouseY* Size + CentreY;
+	Size = Size / 4;
+	console.log( mouseX + " " + mouseY );
+	
+
+
+}
+
+
+function atualizatela()
+{
+	//desenharCenario();
+	desenhaRetangulo( 0, 0, 4000, 4000, "lightgray");
+	desenhaRetangulo( 20, 20, Lt, At, "gray");
+	draw();
+	
+    
+	
+	
+}
+tela.onclick= zoom;
+setInterval(atualizatela, 0);
+
+</script>
