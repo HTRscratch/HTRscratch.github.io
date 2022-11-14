@@ -1,0 +1,551 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+	var Lt = 600;
+	var At = 400;
+	var direcaoH = 90;
+	var direcaoV = 0;
+	var player1X = 20;
+	var player1Y = At / 2;
+	var player2X = Lt - 20;
+	var player2Y = At / 2;
+	var end= 0;
+	
+	var esquerda = 37;
+    var cima = 38;
+    var direita = 39;
+    var baixo = 40;
+	
+	var w= 87;
+	var a= 65;
+	var s= 83;
+	var d= 68;
+	
+	var enter= 13;
+	
+	var P1Pontos= 0;
+	var P2Pontos= 0;
+	
+	var taxa = 1;
+	
+	var ballx = Lt / 2;
+	var bally = At / 2;
+	
+	var numbolapisca= 10;
+	var move= 1;
+	var cmc= 1;
+	var velocidadexBolinha= 1.5;
+	var velocidadeyBolinha = 1.5;
+	
+	var secbolaparada = 1000;
+	
+	var paleta= 'orange';
+	
+	var p1Cima= false;
+	var p1Baixo= false;
+	var p2Cima= false;
+	var p2Baixo= false;
+
+	
+	function resetgame(){
+	
+		ballx = Lt / 2;
+		bally = At / 2;
+		
+		direcaoH = 90;
+		direcaoV = 0;
+		player1X = 20;
+		player1Y = At / 2;
+		player2X = Lt - 20;
+		player2Y = At / 2;
+		
+	
+	
+	}
+	
+	
+	function desenharNum(numero, x )
+	{
+	    
+		switch ( numero ){
+		case 0:
+		{
+		
+			desenhaRetangulo( 500 -x, 92, 30, 15 );
+			desenhaRetangulo( 500-x, 30, 30, 15 );
+			desenhaRetangulo( 483-x, 60, 15, 60);
+			desenhaRetangulo( 518-x, 60, 15, 60);
+			break;
+		
+		
+		}
+		
+		case 1:
+		{
+		
+			
+			desenhaRetangulo( 505-x, 30, 25, 15 );
+			desenhaRetangulo( 518-x, 63, 15, 70);
+			break;
+		
+		
+		}
+		
+		
+		case 2:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 30, 30, 15 );
+			desenhaRetangulo( 518-x, 45, 15, 30);
+			desenhaRetangulo( 500-x, 60, 30, 15 );
+			
+			desenhaRetangulo( 492-x, 75, 15, 30);
+			desenhaRetangulo( 505-x, 90, 40, 15 );
+	
+			break;
+		}
+		
+		case 3:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 30, 30, 15 );
+			desenhaRetangulo( 518-x, 45, 15, 30);
+			desenhaRetangulo( 500-x, 60, 30, 15 );
+			
+			desenhaRetangulo( 518-x, 75, 15, 30);
+			desenhaRetangulo( 505-x, 90, 40, 15 );
+		
+			break;
+		}
+		
+		case 4:
+		{
+		
+			
+			desenhaRetangulo( 518-x, 45, 15, 30);
+			desenhaRetangulo( 518-x, 80, 15, 40);
+			desenhaRetangulo( 500-x, 60, 30, 15 );
+			desenhaRetangulo( 492-x, 40, 15, 40)
+			break;
+		}
+		
+		case 5:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 90, 30, 15 );
+			desenhaRetangulo( 518-x, 75, 15, 30);
+			desenhaRetangulo( 500-x, 60, 30, 15 );
+			
+			desenhaRetangulo( 492-x, 45, 15, 30);
+			desenhaRetangulo( 505-x, 30, 40, 15 );
+	        break;
+		
+		}
+		
+		case 6:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 90, 30, 15 );
+			desenhaRetangulo( 518-x, 75, 15, 30);
+			desenhaRetangulo( 500-x, 60, 30, 15 );
+			
+			desenhaRetangulo( 492-x, 60, 15, 60);
+			desenhaRetangulo( 505-x, 30, 40, 15 );
+			break;
+	
+		
+		}
+		
+		
+		
+		case 7:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 30, 30, 15 );
+			desenhaRetangulo( 518-x, 60, 15, 60);
+			desenhaRetangulo( 518-x, 60, 15, 60);
+			break;
+		
+		
+		}
+		
+		
+		case 8:
+		{
+		
+			
+			desenhaRetangulo( 500-x, 92, 30, 15 );
+			desenhaRetangulo( 500-x, 62, 30, 15 );
+			desenhaRetangulo( 500-x, 30, 30, 15 );
+			desenhaRetangulo( 483-x, 60, 15, 60);
+			desenhaRetangulo( 518-x, 60, 15, 60);
+		
+			break;
+		
+		
+		}
+		
+		case 9:
+		{
+		
+			
+			desenhaRetangulo( 492+13-x, 30, 30, 15 );
+			desenhaRetangulo( 492-x, 45, 15, 30);
+			desenhaRetangulo( 497-x, 60, 30, 15 ); //518,492
+			
+			desenhaRetangulo( 518-x, 60, 15, 60);
+			desenhaRetangulo( 492+13-x, 90, 40, 15 );
+			break;
+	
+		
+		}
+		
+		
+		
+		
+		
+		
+		}
+	}
+
+   
+
+    function desenhaCirculo(x, y, raio) {
+
+        pincel.fillStyle = paleta;
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * Math.PI);
+        pincel.fill();
+    }
+
+    function limpaTela() {
+
+        pincel.clearRect(0, 0, Lt, At);
+		pincel.fillStyle = 'black';
+		pincel.fillRect(0, 0, Lt, At);
+    }
+	
+	function desenhaRetangulo( x, y, lar, alt)
+	{
+		pincel.fillStyle = paleta ;
+		pincel.fillRect( x - lar / 2, y - alt / 2, lar, alt );
+	
+	}
+	
+	// Essa função é invocada pelo evento de soltar uma tecla.
+	function detectarTeclaSolta( evento )
+	{
+		//alert( "Uma tecla foi solta." );
+		
+		switch ( evento.keyCode )
+		{
+			case cima:
+				p1Cima= false;
+				break;
+			case baixo:
+				p1Baixo= false;
+				break;
+			case w:
+				p2Cima= false;
+				break;
+			case s:
+				p2Baixo= false;
+				break;
+		}
+	}
+	
+	// Essa função é invocada pelo evento de pressionar uma tecla.
+	function detectarTeclaPressionada( evento )
+	{
+		switch ( evento.keyCode )
+		{
+			case cima:
+				p1Cima= true;
+				break;
+			case baixo:
+				p1Baixo= true;
+				break;
+			case w:
+				p2Cima= true;
+				break;
+			case s:
+				p2Baixo= true;
+				break;
+		}
+		
+		if( evento.keyCode ==  enter )
+		{
+		
+		
+			if ( move == 1){
+			
+				move= 0;
+				paleta= 'gray';
+			
+			}else{
+			
+				move= 1;
+				paleta= 'orange';
+			
+			}
+		}
+	}
+	
+	function detectarTecla(evento)
+	{
+	
+		
+		
+		if ( move == 1)
+		{
+		
+			if( p1Cima )
+			{
+				player1Y= player1Y - taxa;
+			}
+			
+			if( p1Baixo )
+			{
+				player1Y= player1Y + taxa;
+			}
+			
+			if( p2Cima )
+			{
+				player2Y= player2Y - taxa;
+			}
+			
+			if( p2Baixo )
+			{
+				player2Y= player2Y + taxa;
+			}
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+
+	}
+	
+	
+	function detectarColisaoBola()
+	{
+		if ( move == 1){
+		
+			if ( direcaoH == 90 )
+			{
+				ballx +=velocidadexBolinha;
+				
+			}else{
+			
+				ballx +=-velocidadexBolinha;
+			}
+			
+			if ( ballx > player2X - 5 && bally < player2Y + 25 && bally > player2Y - 25 )
+			{
+			
+			direcaoH = -90;
+			}
+			
+			if ( ballx < player1X + 5 && bally < player1Y + 25 && bally > player1Y - 25 )
+			{
+			
+			direcaoH = 90;
+			}
+			
+			//__________________________________
+			
+			if ( direcaoV == 0 )
+			{
+				bally += velocidadeyBolinha;
+				
+			}else{
+			
+				bally +=- velocidadeyBolinha;
+				
+			}
+			
+			if ( bally < 0 + 5 )
+			{
+			
+			direcaoV = 0;
+			}
+			
+			if ( bally > 400 - 5 )
+			{
+			
+			direcaoV = 180;
+			}
+			
+		
+		}
+	}
+	
+		
+	
+
+    
+
+    function atualizaTela() {
+
+        limpaTela();
+		
+		detectarTecla();
+		
+        desenhaCirculo(ballx, bally, 5);
+		
+		if ( ballx > Lt ){
+		
+			P1Pontos++
+		    resetgame();
+			console.log(  'P1: ' + P1Pontos );
+		}
+		
+		if ( ballx < 0){
+		
+			P2Pontos++
+		    resetgame();
+			console.log(  'P2: ' + P2Pontos );
+		}
+		
+		desenhaRetangulo( player1X, player1Y, 10, 50);
+		desenhaRetangulo( player2X, player2Y, 10, 50);
+		
+		
+		
+		if( P1Pontos > 9 ){
+		
+			move=0;
+			
+			
+			if( end == 0){
+			end= 1;
+			}
+			
+			if( end == 1 )
+			{
+			
+			paleta= "gray";
+			alert( "Player1 venceu!");
+			end= 2;
+			
+			}
+		
+		}
+		
+		if( P2Pontos > 9 ){
+		
+		
+			move=0;
+			
+			
+			if( end == 0){
+			end= 1;
+			}
+			
+			if( end == 1 )
+			{
+			paleta= "gray";
+			alert( "Player2 venceu!");
+			end= 2;
+			
+			}
+		
+		}
+		
+		if( P1Pontos < 9 ){
+		desenharNum( P1Pontos, 400 );
+		
+		}else{
+		
+		desenharNum( 9, 400 );
+		
+		}
+		
+		if( P2Pontos < 9 ){
+		desenharNum( P2Pontos, 0 );
+		
+		}else{
+		
+		desenharNum( 9, 0 );
+		
+		}
+		
+		
+		
+		detectarColisaoBola();
+		
+		if( player1Y > 400 + 50 ){
+		
+		  if( p1Baixo == true){
+		  
+			player1Y= -50;
+			console.log( 'subiu!');
+		  
+		  }
+		
+		}
+		if( player1Y < -50 ){
+		
+		  if( p1Cima == true){
+		  
+			player1Y= 400 + 50;
+			console.log( 'desceu!');
+		  
+		  }
+		
+		}
+		
+		
+		
+		if( player2Y > 400 + 50 ){
+		
+		  if( p2Baixo == true){
+		  
+			player2Y= -50;
+			console.log( 'subiu!');
+		  
+		  }
+		
+		}
+		if( player2Y < -50 ){
+		
+		  if( p2Cima == true){
+		  
+			player2Y= 400 + 50;
+			console.log( 'desceu!');
+		  
+		  }
+		  
+		  
+		
+		}
+		
+		
+		
+	}
+
+   
+	
+	
+		document.onkeydown = detectarTeclaPressionada;
+		document.onkeyup= detectarTeclaSolta;
+		
+	
+	
+	
+	setInterval(atualizaTela, 0000);
+	
+
+</script>
