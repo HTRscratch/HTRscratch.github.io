@@ -1,13 +1,43 @@
 <!DOCTYPE HTML>
 
+
 <html lang = "pt-br">
 	<head>
 		<meta charset = "utf-8">
 		<title> HTRscratch Site </title>
+		<style type = "text/css">
+			body{
+			background-color: #18171d
+			}
+			.titulo{
+				font-size: 4rem;
+				color: #ffffff;
+				background-color: #d91f1f;
+				text-shadow: 2px 2px 5px #51071f;
+				text-align: center;
+				font-family: monospace;
+			}
+			.subtitulo{
+				color: #ffffff;
+				font-size: 0.75rem;
+				text-align: center;
+				font-family: courier;
+			}
+			.detalhe{
+				color: #ffffff;
+				font-size: 0.75rem;
+				text-align: left;
+				font-family: courier;
+			}
+			.link{
+				color: #ffffff;
+				font-family: monospace;
+			}
+		</style>
 	</head>
 	<body>
-		<h1> HTRscratch's site </h1>
-		<h6> Reading this doesn't seem the best thing to do now. </h6>
+		<h1 class = "titulo"> HTRscratch's site </h1>
+		<h6 class = "subtitulo"> Reading this doesn't seem the best thing to do now. </h6>
 		<canvas id = "canvas" width="1350" height="200"></canvas>
 		<script>
 		//Program by HTRscratch =D
@@ -166,12 +196,13 @@
 
 		setInterval(screenfunc,0);
 		</script>
-		<h6> *A JavaScript/HTML code that simulates moons and a planet orbiting each other. By HTRscratch </h6>
+		<h6 class = "detalhe"> * A JavaScript/HTML code that simulates moons and a planet orbiting each other. By HTRscratch. </h6>
+		<h2 class = "link">Game links: </h2>
 		<p>
-			<a href = "Boring Sonic Game.html" > Boring Sonic Game</a> <h3> "Boring sonic game" is a game that i made for spritesheet cut learning. </h3>
+			<a href = "Boring Sonic Game.html" > <h2 class = "link"> Sonic Game </h2> </a>
 		</p>
 		<p>
-			<a href = "PONG.html" > PONG </a> <h3> "PONG" is a game that i just made to test my JS skills. </h3>
+			<a href = "PONG.html" > <h2 class = "link"> PONG </h2> </a>
 		</p>
 		
 	
