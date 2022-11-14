@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+
+<html lang = "pt-br">
+
+	<head>
+	
+		<meta charset= "utf-8">
+		<title> Sonic Game By HTRscratch </title>
+	</head>
+	
+	<body>
+	
+		<canvas id= "screen" width="1200" height="600"> </canvas>
+		<script>
+		
+		var canvas= document.getElementById( "screen" );
+		var context= canvas.getContext( "2d" );
+		
+		var sonicImg= new Image();
+		var animate = false
+		
+		var xImage, yImage
+		var cameraX = 0
+		var cameraY = 0
+		var cameraZ = 150
+		
+		var sonicX = 50
+		var sonicY = 50
+		var sonicSx = 0
+		var sonicSy = 0
+		var sonicState = "idle"
+		var framesPassed = 0
+		
+		var rightArrow = 39
+		var leftArrow = 37
+		var ZArrow = 90
+		var downArrow = 40
+		var upArrow = 38
+		
+		var rightArrowPress = false
+		var leftArrowPress = false
+		var ZArrowPress = false
+		var downArrowPress = false
+		var upArrowPress = false
+		
+		var sonicWidth
+		var sonicHeight
+		var spr_offsetX
+		var spr_offsetY
+		
+		var sonicHitBoxWidth = 44
+		var sonicHitBoxHeight = 64
+		var sonicDir = 65
+		
+		var currentAnim, currentDir
+		const level_1 = [
+		[ 0, 200, 2000, 100, "Brown" ],
+		[ 0, 100, 500, 200, "Green" ]
+		]
+		
+		function state( xStart, yStart, xCut, yCut, xTransform, yTransform,xOffset, yOffset, SpriteSpeed, totalFrames)
+		{ //console.log(currentDir)
+			spr_offsetX = xOffset
+			spr_offsetY = yOffset
+			if ( currentAnim != sonicState || currentDir!= sonicDir )
+			{
+				framesPassed = 0
+				sonicWidth = xCut
+				sonicHeight = yCut
+				xImage = xStart
+				yImage = yStart
+			}
+			currentAnim = sonicState
+			currentDir = sonicDir
+			
+			
+			if (framesPassed > totalFrames - SpriteSpeed)
+			{
+				framesPassed = 0
+			}
+			
+			framesPassed += SpriteSpeed
+			xImage = xStart + Math.floor(framesPassed) * xTransform
+			yImage = yStart + currentDir / 68 * yTransform
+		
+		
+		}
+		
+		
+		
+		function onkeydowndetect(event)
+		{
+			switch ( event.keyCode )
+			{
+				case rightArrow:
+					rightArrowPress = true
+					break;
+					
+				case leftArrow:
+					leftArrowPress = true
+					break;
+
+				case ZArrow:
+					ZArrowPress = true
+					break;
+				case downArrow:
+					downArrowPress = true
+					break;
+				case upArrow:
+					upArrowPress = true
+					break;
+					}
+		}
+			function onkeyupdetect(event)
+			{
+				switch ( event.keyCode )
+				{
+					case rightArrow:
+						rightArrowPress = false
+						break;
+					
+					case leftArrow:
+						leftArrowPress = false
+						break;
+					case ZArrow:
+						ZArrowPress = false
+						break;
+					case downArrow:
+						downArrowPress = false
+						break;
+					case upArrow:
+						upArrowPress = false
+						break;
+				}
+				//console.log( rightArrowPress, leftArrowPress )
+						
+				}
+		
+		sonicImg.src= "sonic sms sprites.png";
+		
+		sonicImg.onload = function()
+		{
+			animate = true
+		}
+		
+		function frame()
+		{	
+			context.fillStyle = "LightGray"
+			context.fillRect(0,0,canvas.width, canvas.height)
+			//==========================================================================================
+			if (!animate) return;
+			
+			function renderImage( a,b,c,d,w,x,y,z )
+			{
+			context.drawImage( sonicImg,	
+			a, b, c, d,
+			w, x, y, z);
+			//context.strokeStyle = "black"
+			//context.strokeRect( w - 2,x - 2,y + 4,z + 4 )
+			}
+			
+			
+			renderImage( 6 + xImage , 46 + yImage, sonicWidth, sonicHeight, //46
+			 
+					((sonicX - cameraX) * cameraZ / 100) + spr_offsetX, ((sonicY - cameraY) * cameraZ / 100) + spr_offsetY,
+					sonicWidth * cameraZ / 100 , sonicHeight * cameraZ / 100)
+						
+						
+			
+			//if ( spr_indexX > 15 ) { spr_indexX  = 1; spr_indexY += 1 }
+			//==========================================================================================
+			
+			context.fillStyle = "green"
+			context.fillRect((0 - cameraX) * cameraZ / 100,( 200 - cameraY) * cameraZ / 100, 1000* cameraZ / 100, 50* cameraZ / 100 )
+			
+			sonicX += sonicSx
+			sonicY += sonicSy
+			cameraX += (( ( sonicX - cameraX ) * cameraZ / 100 ) - canvas.width / 2  ) / 100 + sonicSx * 1.5
+			cameraY += (( ( sonicY - cameraY ) * cameraZ / 100 ) - canvas.height / 2 ) / 100 + sonicSy * 1.5
+			if ( cameraX < 0 )
+			{
+				cameraX = 0
+			
+			}
+			if ( sonicX < 0 )
+			{
+				sonicX = 0
+			
+			}
+			sonicSy += 0.02
+			if (rightArrowPress)
+			{
+				sonicSx += 0.03
+			
+			}else
+			{
+				if (leftArrowPress)
+				{
+					sonicSx -= 0.03
+				
+				}
+			}
+			
+			sonicSx *= 0.985
+			if (sonicY + sonicHitBoxHeight > 200)
+			{
+				while ( sonicY + sonicHitBoxHeight > 200 )
+				{
+					sonicY -= 1
+				
+				}
+				sonicY+= 1
+				sonicSy = 0
+				if (ZArrowPress)
+				{
+					sonicSy = -2
+				
+				}
+			}
+			if ( sonicSx < 0 )
+			{
+				sonicDir = 68
+			}
+			if ( sonicSx > 0 )
+			{
+				sonicDir = 0
+			}
+			
+			
+			if ( sonicSy != 0 )
+			{
+				sonicState = "jump"
+				state( 48 * 1, 68 * 2, 44, 54, 48,59,0,18 ,0.075, 5) //Jump Anim
+			
+			}else
+			{
+				if ( Math.abs(sonicSx) > 1.9 )
+				{	
+					sonicState = "run"
+					state( 48 * 11, 0, 44, 64, 48,68,0,0, Math.abs(sonicSx / 50), 4)//Run Anim
+					
+				
+				}else
+				{
+					sonicState = "walk"
+					state( 48 * 6, 0, 43, 64, 48,68,0,0, Math.abs(sonicSx / 25), 5) //Walk Anim
+					
+				}
+				
+				if ( Math.round(Math.abs(sonicSx) * 10)/ 10 == 0 )
+				{
+					if ( downArrowPress )
+					{
+						sonicState = "down"
+						state( 0, 68 * 2, 44, 55, 48,60, 0, 18 ,0, 1)
+						cameraY += 1
+						
+					}else
+					{
+						if ( upArrowPress )
+						{
+							sonicState = "up"
+							state( 48, 0, 43, 64, 48,68,0,0, 0, 1)
+							cameraY -= 1
+						}else
+						{
+							sonicState = "idle"
+							state( 0, 0, 44, 64, 48,68,0,0, 0, 1)
+						}
+					}
+				
+				}
+			}
+			
+			
+
+		}
+		document.onkeydown = onkeydowndetect;
+		document.onkeyup= onkeyupdetect;
+		
+		
+		setInterval(frame, 0);
+		</script>
+		
+	
+	</body>
+	
+</html>
