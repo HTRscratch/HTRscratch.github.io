@@ -5,218 +5,279 @@
 	<head>
 		<meta charset = "utf-8">
 		<title> HTRscratch's site </title>
+		<link rel="icon" href="Icon.png"></link>
 		<style type = "text/css">
+		
+			header{
+				background: linear-gradient(to bottom, #ec1534, #850c30);
+				border-radius: 20px;
+				margin-top: 0px;
+				border: 1px solid black;
+				box-shadow: 4px 4px 10px rgba(0,0,0,0.75);
+				height: 5rem;
+				width: 80%;
+				margin-left: 10%;
+			}
 			body{
-			background: linear-gradient(to right, #18171d, #223);
+				background: linear-gradient(to bottom, #3d1d1d, #050505);
 			}
-			.titulo{
-				font-size: 4rem;
-				color: #ffffff;
-				background: linear-gradient(to bottom, #d91f1f, #b01730);
-				text-shadow: 2px 2px 5px #51071f;
+			h1{
+				margin-top: -2px;
+				font-size: 3rem;
+				text-shadow: 2px 2px 5px rgba(0,0,0,0.75);
 				text-align: center;
 				font-family: monospace;
+				color: #ffffff;
+				height: 2rem;
+				text-decoration: underline;
 			}
-			.subtitulo{
+			
+			h2{
+				color: #ffffff;
+				font-family: monospace;
+				font-size: 2rem;
+				text-decoration: underline;
+				text-shadow: 2px 2px 5px rgba(0,0,0,0.75);
+			}
+			
+			h3{ /* desc */
+				color: #ffffff;
+				font-size: 1rem;
+				font-family: courier;
+				text-align: center;
+			}
+			
+			h6{
 				color: #ffffff;
 				font-size: 0.75rem;
 				text-align: center;
 				font-family: courier;
+				opacity: 0.5;
 			}
-			.detalhe{
-				color: #ffffff;
-				font-size: 0.75rem;
-				text-align: left;
-				font-family: courier;
-			}
-			.h1{
-				color: #ffffff;
-				font-family: monospace;
-			}
+			
 			a{
 				color:#ef4141;
 				font-family: monospace;
 				text-decoration: underline;
 			}
 			a:hover{
-				color:#b01730;
+				color:#850c30;
 				font-family: monospace;
 				text-decoration: none;
 				
 			}
-			::selection {
- 			 background: #ef4141;
+			
+			canvas{
+				border-radius: 10px;
+				border: 1px solid black;
+				box-shadow: 2px 4px 10px rgba(0,0,0,0.75);
+				width: 98%;
+				margin-left: 1%;
+				margin-top: 10px
+				
 			}
+			
+			.separator{
+				width: 100%;
+				height: 1px;
+				background-color: rgba(0,0,0,1);
+			}
+			
+			::selection {
+ 			 background: #ec1534;
+			}	
 		</style>
 	</head>
 	<body>
-		<h1 class = "titulo"> HTRscratch.github.io </h1>
-		<h6 class = "subtitulo"> Reading this doesn't seem the best thing to do now. </h6>
-		<canvas id = "canvas" width="1350" height="200" style="width: 100%;"></canvas>
-		<script>
-		//Program by HTRscratch =D
+	
+	<header>
+		<h1> HTRscratch.github.io </h1>
+		<h6> Reading this doesn't seem the best thing to do now. </h6>
+	</header>
+		
+		<h3><p class = "desc" style = "text-align: center;"> This site was made by me for fun and web language learning. You can see more info on <a href = "Credits" >credits</a> :D </h3></p>
+		<header style = "background: linear-gradient(to bottom, #3d1d1d, #1a0a0a);height: 46rem; margin-top: 2rem;
+				width: 75%;
+				margin-left: 12.5%;">
+		
+			<canvas id = "canvas" width="1350" height="375"></canvas>
+			<script>
+			//Program by HTRscratch =D
 
-		var canvas = document.getElementById("canvas");
-		var renderer = canvas.getContext("2d");
+			var canvas = document.getElementById("canvas");
+			var renderer = canvas.getContext("2d");
 
-		var screenWidth = canvas.width;
-		var screenHeight = canvas.height;
+			var screenWidth = canvas.width;
+			var screenHeight = canvas.height;
 
-		var drawX, drawY;
-		var CAMERAX = 0;
-		var CAMERAY = 0;
-		var CAMERAZ = 100;
+			var drawX, drawY;
+			var CAMERAX = 0;
+			var CAMERAY = 0;
+			var CAMERAZ = 100;
 
-		var luaX;
-		var luaY;
-		var luaSpX;
-		var luaSpY;
-		var luaAcX;
-		var luaAcY;
-
-
-		const planetsize = 60;
-		const luasize = 10;
-
-
-		var vetorbolas = [];
-
-		for ( i = 0; i < 2; i += 0.1)
-		{
-			adicionarbola(0,200,i,0,0,0)
-		}
-		function calculatecircle( vetorbolasID )
-		{
-			luaX = vetorbolas[ vetorbolasID * 6 + 0 ]
-			luaY = vetorbolas[ vetorbolasID * 6 + 1 ]
-			luaSpX = vetorbolas[ vetorbolasID * 6 + 2 ]
-			luaSpY = vetorbolas[ vetorbolasID * 6 + 3 ]
-			luaAcX = vetorbolas[ vetorbolasID * 6 + 4 ]
-			luaAcY = vetorbolas[ vetorbolasID * 6 + 5 ]
+			var luaX;
+			var luaY;
+			var luaSpX;
+			var luaSpY;
+			var luaAcX;
+			var luaAcY;
 
 
-			var disX = 0 - luaX
-			var disY = 0 - luaY
+			const planetsize = 60;
+			const luasize = 10;
 
-			var distance = Math.sqrt( disX * disX + disY * disY )
 
-			if ( luasize + planetsize < distance )
+			var vetorbolas = [];
+
+			for ( i = 0; i < 2; i += 0.1)
 			{
+				adicionarbola(0,200,i,0,0,0)
+			}
+			function calculatecircle( vetorbolasID )
+			{
+				luaX = vetorbolas[ vetorbolasID * 6 + 0 ]
+				luaY = vetorbolas[ vetorbolasID * 6 + 1 ]
+				luaSpX = vetorbolas[ vetorbolasID * 6 + 2 ]
+				luaSpY = vetorbolas[ vetorbolasID * 6 + 3 ]
+				luaAcX = vetorbolas[ vetorbolasID * 6 + 4 ]
+				luaAcY = vetorbolas[ vetorbolasID * 6 + 5 ]
 
-				luaSpX += luaAcX
-				luaSpY += luaAcY
-				luaX += luaSpX
-				luaY += luaSpY
 
-				luaAcX = 0.0000001 * -luaX / distance * distance * distance
-				luaAcY = 0.0000001 * -luaY / distance * distance * distance
+				var disX = 0 - luaX
+				var disY = 0 - luaY
 
-				//console.log(distance)
+				var distance = Math.sqrt( disX * disX + disY * disY )
+
+				if ( luasize + planetsize < distance )
+				{
+
+					luaSpX += luaAcX
+					luaSpY += luaAcY
+					luaX += luaSpX
+					luaY += luaSpY
+
+					luaAcX = 0.0000001 * -luaX / distance * distance * distance
+					luaAcY = 0.0000001 * -luaY / distance * distance * distance
+
+					//console.log(distance)
+				}
+
+				CAMERAX += ( luaX - CAMERAX )/ 50
+				CAMERAY += ( luaY - CAMERAY )/ 50
+
+
+				vetorbolas[ vetorbolasID * 6 + 0 ] = luaX
+				vetorbolas[ vetorbolasID * 6 + 1 ] = luaY
+				vetorbolas[ vetorbolasID * 6 + 2 ] = luaSpX
+				vetorbolas[ vetorbolasID * 6 + 3 ] = luaSpY
+				vetorbolas[ vetorbolasID * 6 + 4 ] = luaAcX
+				vetorbolas[ vetorbolasID * 6 + 5 ] = luaAcY
 			}
 
-			CAMERAX += ( luaX - CAMERAX )/ 50
-			CAMERAY += ( luaY - CAMERAY )/ 50
 
-
-			vetorbolas[ vetorbolasID * 6 + 0 ] = luaX
-			vetorbolas[ vetorbolasID * 6 + 1 ] = luaY
-			vetorbolas[ vetorbolasID * 6 + 2 ] = luaSpX
-			vetorbolas[ vetorbolasID * 6 + 3 ] = luaSpY
-			vetorbolas[ vetorbolasID * 6 + 4 ] = luaAcX
-			vetorbolas[ vetorbolasID * 6 + 5 ] = luaAcY
-		}
-
-
-		function adicionarbola( x, y, sx, sy, ax, ay )
-		{
-			vetorbolas.push(x);
-			vetorbolas.push(y);
-			vetorbolas.push(sx);
-			vetorbolas.push(sy);
-			vetorbolas.push(ax);
-			vetorbolas.push(ay);
-		}
-		//console.log( vetorbolas )
-
-		function drawframe()
-		{
-
-			//console.log(screenWidth + " , " + screenHeight);
-
-			renderer.fillStyle = "black";
-			renderer.fillRect(0,0,screenWidth,screenHeight);
-
-			function drawrect( x, y, sx, sy, cor )
+			function adicionarbola( x, y, sx, sy, ax, ay )
 			{
-				drawX = x + screenWidth / 2;
-				drawY = screenHeight - (y + screenHeight / 2);
-
-				drawX = drawX - sx / 2;
-				drawY = drawY - sy / 2;
-
-				drawX = drawX - CAMERAX;
-				drawY = drawY + CAMERAY;
-
-			renderer.fillStyle = cor;
-				renderer.fillRect(drawX,drawY,sx,sy);
+				vetorbolas.push(x);
+				vetorbolas.push(y);
+				vetorbolas.push(sx);
+				vetorbolas.push(sy);
+				vetorbolas.push(ax);
+				vetorbolas.push(ay);
 			}
+			//console.log( vetorbolas )
 
-			function drawcircle( x, y, radius, cor )
+			function drawframe()
 			{
 
-				drawX = x + screenWidth / 2;
-				drawY = screenHeight - (y + screenHeight / 2);
+				//console.log(screenWidth + " , " + screenHeight);
 
-				drawX = drawX - CAMERAX;
-				drawY = drawY + CAMERAY;
+				renderer.fillStyle = "black";
+				renderer.fillRect(0,0,screenWidth,screenHeight);
+
+				function drawrect( x, y, sx, sy, cor )
+				{
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - sx / 2;
+					drawY = drawY - sy / 2;
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
 
 				renderer.fillStyle = cor;
-				renderer.beginPath();
-				renderer.arc(drawX, drawY, radius, 0, 2 * Math.PI);
-				renderer.fill();
+					renderer.fillRect(drawX,drawY,sx,sy);
+				}
 
+				function drawcircle( x, y, radius, cor )
+				{
+
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
+
+					renderer.fillStyle = cor;
+					renderer.beginPath();
+					renderer.arc(drawX, drawY, radius, 0, 2 * Math.PI);
+					renderer.fill();
+
+				}
+
+				drawcircle(0,0,planetsize,"Blue");
+				drawcircle(0,0,planetsize/2,"Green");
+
+				for ( i = 0; i < vetorbolas.length; i += 6 )
+				{
+
+					drawcircle(vetorbolas[i],vetorbolas[i + 1],luasize,"LightGray");
+
+				}
+				renderer.fillStyle = "White"
+				renderer.font = "15px Courier"
+				renderer.fillText("* A JavaScript/HTML code that simulates moons and a planet orbiting each other. By HTRscratch.",10, canvas.height - 10)
 			}
 
-			drawcircle(0,0,planetsize,"Blue");
-			drawcircle(0,0,planetsize/2,"Green");
 
-			for ( i = 0; i < vetorbolas.length; i += 6 )
+			function calculateframe()
 			{
+				//calculate force
 
-				drawcircle(vetorbolas[i],vetorbolas[i + 1],luasize,"LightGray");
+				for ( i = 0; i < vetorbolas.length / 6; i += 1 )
+				{
+
+					calculatecircle( i );
+
+				}
 
 			}
-		}
 
-
-		function calculateframe()
-		{
-			//calculate force
-
-			for ( i = 0; i < vetorbolas.length / 6; i += 1 )
+			function screenfunc()
 			{
-
-				calculatecircle( i );
-
+				calculateframe();
+				drawframe();
 			}
 
-		}
-
-		function screenfunc()
-		{
-			calculateframe();
-			drawframe();
-		}
-
-		setInterval(screenfunc,0);
-		</script>
-		<h6 class = "detalhe"> * A JavaScript/HTML code that simulates moons and a planet orbiting each other. By HTRscratch. </h6>
-		<h2 class = "h1"> See more! </h2>
-		<p>
-			<a href = "Games" > <h2 class = "a"> GAMES </h2> </a>
-			<a href = "About" > <h2 class = "a"> ABOUT </h2> </a>
-			<a href = "Credits" > <h2 class = "a"> CREDITS </h2> </a>
-		</p>
-	
+			setInterval(screenfunc,0);
+			</script>
+			<div class = "separator" style = "margin-top: 6px"></div>
+			
+				<h2 style = "text-align: center;"> See more! </h2>
+				<h3> These things can change considerably your in-site time. (or not) </h3>
+				
+				<h2 style = "text-align: center; text-decoration: none;" >
+				<a href = "Games">Games</a>ㅤㅤ<a href = "Simulations" >Simulations</a>ㅤㅤ<a href = "Credits">Credits </a>
+				</h2>
+				
+				<div class = "separator"></div>
+				
+				<h2 style = "text-align: center;"> Social networks </h2>
+				<h3> You can find me on: </h3>
+				<h2 style = "text-align: center; text-decoration: none;" >
+					<a href = "https://scratch.mit.edu/users/HTR2010">Scratch</a>ㅤㅤ<a href = "https://www.roblox.com/users/2480467223/profile" >Roblox</a>ㅤㅤ<a href = "https://Discord.com">Discord ( HTRscratch#5748 )</a>
+				</h2>
+				<h6 class = "subtitulo"> @HTRscratch - 2022</h6>
+		</header>
 	</body>
 </html>
