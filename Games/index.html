@@ -4,61 +4,200 @@
 <html lang = "pt-br">
 	<head>
 		<meta charset = "utf-8">
-		<title> Games on HTRscratch.github.io </title>
-		<style type = "text/css">
-      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-			body{
-			background: linear-gradient(to right, #18171d, #223);
-			}
-			.titulo{
-				font-size: 4rem;
-				color: #ffffff;
-				background: linear-gradient(to bottom, #d91f1f, #b01730);
-				text-shadow: 2px 2px 5px #51071f;
-				text-align: center;
-				font-family: 'Press Start 2P';
-			}
-			.subtitulo{
-				color: #ffffff;
-				font-size: 0.75rem;
-				text-align: center;
-				font-family: 'Press Start 2P';
-			}
-			.detalhe{
-				color: #ffffff;
-				font-size: 0.75rem;
-				text-align: left;
-				font-family: courier;
-			}
-			.h1{
-				color: #ffffff;
-				font-family: monospace;
-			}
-			a{
-				color:#ef4141;
-				font-family: monospace;
-				text-decoration: underline;
-			}
-			a:hover{
-				color:#b01730;
-				font-family: monospace;
-				text-decoration: none;
-				
-			}
-			::selection {
- 			 background: #ef4141;
-			}
-		</style>
+		<title> HTRscratch's site </title>
+		<link rel="icon" href="Icon.png"></link>
+		<link rel="stylesheet" href= "style.css"> 
 	</head>
 	<body>
-		<h1 class = "titulo"> G A M E S </h1>
-		<h6 class = "subtitulo"> Waste your next 5 minutes on this page :D </h6>
-		<h2 class = "h1"> The old ones: </h2>
-		<p>
-			<a href = "Boring_Sonic_Game" > <h2 class = "a"> Sonic game </h2> </a>
-			<a href = "PONG" > <h2 class = "a"> PONG </h2> </a>
-			<a href = "MandelBrot_Set" > <h2 class = "a"> MandelBrot Set </h2> </a>
-		</p>
 	
+	<header>
+		<h1> HTRscratch.github.io </h1>
+		<h6> Reading this doesn't seem the best thing to do now. </h6>
+	</header>
+		
+		<h3><p class = "desc" style = "text-align: center;"> This site was made by me for fun and web language learning. You can see more info on <a href = "Credits" >credits</a> :D </h3></p>
+		<header style = "background: linear-gradient(to bottom, #3d1d1d, #1a0a0a);height: 46rem; margin-top: 2rem;
+				width: 75%;
+				margin-left: 12.5%;">
+		
+			<canvas id = "canvas" width="1350" height="375"></canvas>
+			<script>
+			//Program by HTRscratch =D
+
+			var canvas = document.getElementById("canvas");
+			var renderer = canvas.getContext("2d");
+
+			var screenWidth = canvas.width;
+			var screenHeight = canvas.height;
+
+			var drawX, drawY;
+			var CAMERAX = 0;
+			var CAMERAY = 0;
+			var CAMERAZ = 100;
+
+			var luaX;
+			var luaY;
+			var luaSpX;
+			var luaSpY;
+			var luaAcX;
+			var luaAcY;
+
+
+			const planetsize = 60;
+			const luasize = 10;
+
+
+			var vetorbolas = [];
+
+			for ( i = 0; i < 2; i += 0.1)
+			{
+				adicionarbola(0,200,i,0,0,0)
+			}
+			function calculatecircle( vetorbolasID )
+			{
+				luaX = vetorbolas[ vetorbolasID * 6 + 0 ]
+				luaY = vetorbolas[ vetorbolasID * 6 + 1 ]
+				luaSpX = vetorbolas[ vetorbolasID * 6 + 2 ]
+				luaSpY = vetorbolas[ vetorbolasID * 6 + 3 ]
+				luaAcX = vetorbolas[ vetorbolasID * 6 + 4 ]
+				luaAcY = vetorbolas[ vetorbolasID * 6 + 5 ]
+
+
+				var disX = 0 - luaX
+				var disY = 0 - luaY
+
+				var distance = Math.sqrt( disX * disX + disY * disY )
+
+				if ( luasize + planetsize < distance )
+				{
+
+					luaSpX += luaAcX
+					luaSpY += luaAcY
+					luaX += luaSpX
+					luaY += luaSpY
+
+					luaAcX = 0.0000001 * -luaX / distance * distance * distance
+					luaAcY = 0.0000001 * -luaY / distance * distance * distance
+
+					//console.log(distance)
+				}
+
+				CAMERAX += ( luaX - CAMERAX )/ 50
+				CAMERAY += ( luaY - CAMERAY )/ 50
+
+
+				vetorbolas[ vetorbolasID * 6 + 0 ] = luaX
+				vetorbolas[ vetorbolasID * 6 + 1 ] = luaY
+				vetorbolas[ vetorbolasID * 6 + 2 ] = luaSpX
+				vetorbolas[ vetorbolasID * 6 + 3 ] = luaSpY
+				vetorbolas[ vetorbolasID * 6 + 4 ] = luaAcX
+				vetorbolas[ vetorbolasID * 6 + 5 ] = luaAcY
+			}
+
+
+			function adicionarbola( x, y, sx, sy, ax, ay )
+			{
+				vetorbolas.push(x);
+				vetorbolas.push(y);
+				vetorbolas.push(sx);
+				vetorbolas.push(sy);
+				vetorbolas.push(ax);
+				vetorbolas.push(ay);
+			}
+			//console.log( vetorbolas )
+
+			function drawframe()
+			{
+
+				//console.log(screenWidth + " , " + screenHeight);
+
+				renderer.fillStyle = "black";
+				renderer.fillRect(0,0,screenWidth,screenHeight);
+
+				function drawrect( x, y, sx, sy, cor )
+				{
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - sx / 2;
+					drawY = drawY - sy / 2;
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
+
+				renderer.fillStyle = cor;
+					renderer.fillRect(drawX,drawY,sx,sy);
+				}
+
+				function drawcircle( x, y, radius, cor )
+				{
+
+					drawX = x + screenWidth / 2;
+					drawY = screenHeight - (y + screenHeight / 2);
+
+					drawX = drawX - CAMERAX;
+					drawY = drawY + CAMERAY;
+
+					renderer.fillStyle = cor;
+					renderer.beginPath();
+					renderer.arc(drawX, drawY, radius, 0, 2 * Math.PI);
+					renderer.fill();
+
+				}
+
+				drawcircle(0,0,planetsize,"Blue");
+				drawcircle(0,0,planetsize/2,"Green");
+
+				for ( i = 0; i < vetorbolas.length; i += 6 )
+				{
+
+					drawcircle(vetorbolas[i],vetorbolas[i + 1],luasize,"LightGray");
+
+				}
+				renderer.fillStyle = "White"
+				renderer.font = "15px Courier"
+				renderer.fillText("* A JavaScript/HTML code that simulates moons and a planet orbiting each other. By HTRscratch.",10, canvas.height - 10)
+			}
+
+
+			function calculateframe()
+			{
+				//calculate force
+
+				for ( i = 0; i < vetorbolas.length / 6; i += 1 )
+				{
+
+					calculatecircle( i );
+
+				}
+
+			}
+
+			function screenfunc()
+			{
+				calculateframe();
+				drawframe();
+			}
+
+			setInterval(screenfunc,0);
+			</script>
+			<div class = "separator" style = "margin-top: 6px"></div>
+			
+				<h2 style = "text-align: center;"> See more! </h2>
+				<h3> These things can change considerably your in-site time. (or not) </h3>
+				
+				<h2 style = "text-align: center; text-decoration: none;" >
+				<a href = "Games">Games</a>ㅤㅤ<a href = "Simulations" >Simulations</a>ㅤㅤ<a href = "Credits">Credits </a>
+				</h2>
+				
+				<div class = "separator"></div>
+				
+				<h2 style = "text-align: center;"> Social networks </h2>
+				<h3> You can find me on: </h3>
+				<h2 style = "text-align: center; text-decoration: none;" >
+					<a href = "https://scratch.mit.edu/users/HTR2010">Scratch</a>ㅤㅤ<a href = "https://www.roblox.com/users/2480467223/profile" >Roblox</a>ㅤㅤ<a href = "https://Discord.com">Discord ( HTRscratch#5748 )</a>
+				</h2>
+				<h6 class = "subtitulo"> @HTRscratch - 2022</h6>
+		</header>
 	</body>
 </html>
